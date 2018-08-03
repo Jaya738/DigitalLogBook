@@ -11,8 +11,8 @@
       font-family: Arial, Helvetica, sans-serif;
     }
     form {
-      float: left;
-      margin:10px;
+      margin:50px auto;
+      width: 30%;
       border: 3px solid #f1f1f1;
       padding: 10px;
     }
@@ -24,6 +24,7 @@
       display: inline-block;
       border: 1px solid #ccc;
       box-sizing: border-box;
+      width: 100%;
     }
     button {
       background-color: #4CAF50;
@@ -57,17 +58,6 @@
       background-color: #4CAF50;
       color: white;
     }
-    table{
-      width: 100%;
-      margin: 10px auto;
-      border-collapse:collapse;
-      border: 1px solid black;
-    }
-    th, td {
-      border: 1px solid black;
-      text-align: left;
-      border-collapse: collapse;
-    }
 
     #logo{
       float: left;
@@ -84,42 +74,16 @@
     <a href="/print.html"><img src="{{url_for('static',filename='images/printericon.png')}}" alt="Print"></a>
     <a href="/adminpage"><img src="{{url_for('static',filename='images/homeicon.png')}}" alt="Home"></a>
   </nav>
-  <div style="overflow-y: scroll; height:350px;">
-    <table>
-      <thead>
-        <tr>
-          <th style="width:5%">SI NO</th>
-          <th style="width:15%">ID number</th>
-          <th style="width:39%">Purpose</th>
-          <th style="width:15%">Equipment Id</th>
-          <th style="width:13%">Date</th>
-          <th style="width:13%">Logged in time</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%for d in data%}
-        <tr>
-          <td>{{loop.index}}</td>
-          <td>{{d[0]}}</td>
-          <td>{{d[1]}}</td>
-          <td>{{d[2]}}</td>
-          <td>{{d[3]}}</td>
-          <td>{{d[4]}}</td>
-        </tr>
-        {%endfor%}
-      </tbody>
-    </table>
-  </div>
-  <form method="post" style="width:72%;">
-    <input type="number" placeholder="Enter ID Number" name="sid" style="width:25%;" required>
-    <input type="text" placeholder="Enter Purpose" name="prps" style="width:44%;" required>
-    <input type="text" placeholder="Enter Equipment Id" name="eqid" style="width:30%;">
+  <center><h5 style="color:red;">{{error}}</h5></center>
+  <form method="post">
+    <input type="number" placeholder="Enter ID Number" name="sid" required>
+    <input type="text" placeholder="Enter Purpose" name="prps" required>
+    <input type="text" placeholder="Enter Equipment Id" name="eqid">
     <button type="submit" value="login">Login</button>
   </form>
-  <form method="post" style="width:20%;">
-    <input type="number" placeholder="Enter ID Number" name="sid" style="width:100%;" required>
+  <form method="post">
+    <input type="number" placeholder="Enter ID Number" name="sid" required>
     <button type="submit" value = "logout">Logout</button>
   </form>
-  <center><h5 style="color:red;">{{error}}</h5></center>
 </body>
 </html>

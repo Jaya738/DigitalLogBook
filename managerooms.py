@@ -8,7 +8,7 @@ try:
         conn = MySQLdb.connect(host="localhost",
                                user=credits_user,
                                passwd=credits_psw,
-                               db="digitallogbook")
+                               db="your_database_name")
         c = conn.cursor()
         while True:
             choice = int(raw_input("-------------------------\nklef log book\n-------------------------\n1.Create New Room\n2.Delete Room\n3.Show all Room\n4.Exit\nplease choose an option:"))
@@ -18,7 +18,7 @@ try:
                     c.execute("SELECT * FROM rooms where room='{}'".format(room))
                     if len(c.fetchall()) < 1:
                         c.execute("INSERT INTO rooms(room) VALUES('{}')".format(room))
-                        c.execute("CREATE TABLE {}(userId INT NOT NULL,purpose VARCHAR(30),equipmentid VARCHAR(20),datecol date NOT NULL,intime time NOT NULL,outtime time)".format(room))
+                        c.execute("CREATE TABLE {}(si INT NOT NULL PRIMARY KEY AUTO_INCREMENT,userId INT NOT NULL,purpose VARCHAR(30),equipmentid VARCHAR(20),datecol date NOT NULL,intime time NOT NULL,outtime time)".format(room))
                     else:
                         print "The Room number is already existed"
                 elif choice == 2:

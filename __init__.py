@@ -165,62 +165,22 @@ def adminhandler():
                         sid = request.form['sid']
                         prps = request.form['prps']
                         eqid = request.form['eqid']
-                        c.execute("SELECT * FROM {} where outtime is NULL and userId={}".format(roomnumber,sid))
-                        results = c.fetchall()
-                        if len(results) < 1:
-                            c.execute("INSERT INTO {}(userId,purpose,equipmentid,datecol,intime) VALUES({},'{}','{}',NOW(),NOW())".format(roomnumber,sid,prps,eqid))
-                            conn.commit()
-                            c.close()
-                            conn.close()
-                            return redirect(url_for('adminhandler'))
-                        else:
-                            errordata = "The Student Id "+str(results[0][0])+" is already logged in on "+str(results[0][3])+" "+str(results[0][4])
-                            c.execute("SELECT * FROM {} where outtime is NULL".format(roomnumber))
-                            datarr = []
-                            for rows in c.fetchall():
-                                row = []
-                                for ele in rows:
-                                    row.append(str(ele))
-                                datarr.append(tuple(row))
-                            datarr = datarr[::-1]
-                            c.close()
-                            conn.close()
-                            return render_template('mainpage.html', data=datarr, error=errordata)
+                        c.execute("INSERT INTO {}(userId,purpose,equipmentid,datecol,intime) VALUES({},'{}','{}',NOW(),NOW())".format(roomnumber,sid,prps,eqid))
+                        conn.commit()
+                        c.close()
+                        conn.close()
+                        return render_template('mainpage.html')
                     else:
                         sid = request.form['sid']
-                        c.execute("SELECT * FROM {} where outtime is NULL and userId={}".format(roomnumber,sid))
-                        if len(c.fetchall()) == 1:
-                            c.execute("UPDATE {} SET outtime=NOW() WHERE userId={}".format(roomnumber, sid))
-                            conn.commit()
-                            c.close()
-                            conn.close()
-                            return redirect(url_for('adminhandler'))
-                        else:
-                            errordata = "The Student Id "+str(sid)+" is not logged in!"
-                            c.execute("SELECT * FROM {} where outtime is NULL".format(roomnumber))
-                            datarr = []
-                            for rows in c.fetchall():
-                                row = []
-                                for ele in rows:
-                                    row.append(str(ele))
-                                datarr.append(tuple(row))
-                            datarr = datarr[::-1]
-                            c.close()
-                            conn.close()
-                            return render_template('mainpage.html', data=datarr, error=errordata)
+                        c.execute("UPDATE {} SET outtime=NOW() WHERE userId={} order by si desc limit 1".format(roomnumber, sid))
+                        conn.commit()
+                        c.close()
+                        conn.close()
+                        return render_template('mainpage.html')
                 else:
-                    errordata = ""
-                    c.execute("SELECT * FROM {} where outtime is NULL".format(roomnumber))
-                    datarr = []
-                    for rows in c.fetchall():
-                        row = []
-                        for ele in rows:
-                            row.append(str(ele))
-                        datarr.append(tuple(row))
-                    datarr = datarr[::-1]
                     c.close()
                     conn.close()
-                    return render_template('mainpage.html', data=datarr, error=errordata)
+                    return render_template('mainpage.html')
             else:
                 c.close()
                 conn.close()
