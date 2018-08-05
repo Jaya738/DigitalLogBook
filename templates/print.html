@@ -102,6 +102,7 @@
       From&nbsp&nbsp&nbsp<input type="date" name="fromdate" required>
       To&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="date" name="todate" required>
     </div>
+    <input type="date" name="dateformat" value="2014-02-25" style="display:none;" required>
     <button type="submit">Get Data</button>
   </form>
   <script>
@@ -112,8 +113,8 @@
         if(x=="date")
         {
             document.getElementById("selectchange").innerHTML =
-            "From&nbsp&nbsp&nbsp<input type=\"date\" name=\"fromdate\" value=\"2014-02-09\" required>\
-            To&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type=\"date\" name=\"todate\" value=\"2014-02-09\" required>"
+            "From&nbsp&nbsp&nbsp<input type=\"date\" name=\"fromdate\" required>\
+            To&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type=\"date\" name=\"todate\" required>"
         }
         else
         {

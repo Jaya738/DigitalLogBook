@@ -79,8 +79,21 @@ def printerhandler():
                     if request.form['searchtype'] == "date":
                         fromdate = request.form['fromdate']
                         todate = request.form['todate']
+                        dateformat = request.form['dateformat']
+                        if dateformat=="2014-25-02":
+                            toarr,fromarr = todate.split("-"), fromdate.split("-")
+                            todate = "-".join(toarr[0],toarr[2],toarr[1])
+                            fromdate = "-".join(fromarr[0],fromarr[2],fromarr[1])
+                        elif dateformat=="2014/25/02":
+                            toarr,fromarr = todate.split("/"), fromdate.split("/")
+                            todate = "-".join(toarr[0],toarr[2],toarr[1])
+                            fromdate = "-".join(fromarr[0],fromarr[2],fromarr[1])
+                        elif dateformat=="2014/02/25":
+                            toarr,fromarr = todate.split("/"), fromdate.split("/")
+                            todate = "-".join(toarr[0],toarr[1],toarr[2])
+                            fromdate = "-".join(fromarr[0],fromarr[1],fromarr[2])
                         if fromdate == todate:
-                            c.execute("SELECT * FROM {} WHERE datecol>={}".format(roomnumber, fromdate))
+                            c.execute("SELECT * FROM {} WHERE datecol>='{}'".format(roomnumber, fromdate))
                             datarr = []
                             for rows in c.fetchall():
                                 row = []
@@ -92,7 +105,7 @@ def printerhandler():
                             heading = "Student Log report of "+str(roomnumber)+" during "+str(fromdate)
                             return render_template("printdata.html", data=datarr, heading=heading)
                         else:
-                            c.execute("SELECT * FROM {} WHERE datecol>={} and datecol<={}".format(roomnumber, fromdate, todate))
+                            c.execute("SELECT * FROM {} WHERE datecol>='{}' and datecol<='{}'".format(roomnumber, fromdate, todate))
                             datarr = []
                             for rows in c.fetchall():
                                 row = []
@@ -165,14 +178,14 @@ def adminhandler():
                         sid = request.form['sid']
                         prps = request.form['prps']
                         eqid = request.form['eqid']
-                        c.execute("INSERT INTO {}(userId,purpose,equipmentid,datecol,intime) VALUES({},'{}','{}',NOW(),NOW())".format(roomnumber,sid,prps,eqid))
+                        c.execute("INSERT INTO {}(userId,purpose,equipmentid,datecol,intime) VALUES({},'{}','{}',CURDATE(),CURTIME())".format(roomnumber,sid,prps,eqid))
                         conn.commit()
                         c.close()
                         conn.close()
                         return render_template('mainpage.html')
                     else:
                         sid = request.form['sid']
-                        c.execute("UPDATE {} SET outtime=NOW() WHERE userId={} order by si desc limit 1".format(roomnumber, sid))
+                        c.execute("UPDATE {} SET outtime=CURTIME() WHERE userId={} and outtime=NULL order by si desc limit 1".format(roomnumber, sid))
                         conn.commit()
                         c.close()
                         conn.close()
@@ -253,4 +266,4 @@ def loginhandler():
 
 if __name__ == "__main__":
     app.config['SECRET_KEY'] = "Your_secret_string"
-    app.run()
+    app.run("192.168.43.104",port="80")
