@@ -185,7 +185,7 @@ def adminhandler():
                         return render_template('mainpage.html')
                     else:
                         sid = request.form['sid']
-                        c.execute("UPDATE {} SET outtime=CURTIME() WHERE userId={} and outtime=NULL order by si desc limit 1".format(roomnumber, sid))
+                        c.execute("UPDATE {} SET outtime=CURTIME() WHERE userId={} order by si desc limit 1".format(roomnumber, sid))
                         conn.commit()
                         c.close()
                         conn.close()
